@@ -259,11 +259,11 @@ a.secondary {
 }
 
 .random-words span:nth-child(1) { color: #ff0000; }
-random-words span:nth-child(2) { color: #00ff00; }
-random-words span:nth-child(3) { color: #0000ff; }
-random-words span:nth-child(4) { color: #ff00ff; }
-random-words span:nth-child(5) { color: #00ffff; }
-random-words span:nth-child(6) { color: #ffff00; }
+.random-words span:nth-child(2) { color: #00ff00; }
+.random-words span:nth-child(3) { color: #0000ff; }
+.random-words span:nth-child(4) { color: #ff00ff; }
+.random-words span:nth-child(5) { color: #00ffff; }
+.random-words span:nth-child(6) { color: #ffff00; }
 
 .fullScreenBackground {
   background-color: #f5f5f5;
