@@ -7,6 +7,7 @@ export default function Home() {
   const [image, setImage] = useState<string | null>(null);
   const [result, setResult] = useState<string[]>([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const resultsArray = [
     "Confident", "Fast", "Strength", "Creative", "Analytical", "Empathetic", 
@@ -19,8 +20,7 @@ export default function Home() {
     "Dependable", "Efficient", "Flexible", "Genuine", "Hardworking", 
     "Humorous", "Independent", "Insightful", "Mature", "Practical", 
     "Rational", "Self-reliant", "Spontaneous", "Strategic", "Tactful"
-];
-
+  ];
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -44,10 +44,23 @@ export default function Home() {
   };
 
   const generateResult = () => {
-    const shuffledArray = resultsArray.sort(() => 0.5 - Math.random());
-    const selectedResults = shuffledArray.slice(0, 6);
-    setResult(selectedResults);
+    if (isButtonDisabled) return;
+
+    setIsLoading(true);
     setIsButtonDisabled(true);
+
+    // Simulate "thinking" time (2.5 seconds)
+    setTimeout(() => {
+      const shuffledArray = resultsArray.sort(() => 0.5 - Math.random());
+      const selectedResults = shuffledArray.slice(0, 6);
+      setResult(selectedResults);
+      setIsLoading(false);
+
+      // Cooldown before next search (3 seconds)
+      setTimeout(() => {
+        setIsButtonDisabled(false);
+      }, 3000);
+    }, 2500);
   };
 
   const getRandomColor = () => {
@@ -82,7 +95,14 @@ export default function Home() {
               >
                 <Image src={image} alt="Uploaded Image" width={300} height={300} />
               </div>
-              <button onClick={generateResult} className={styles.generate} disabled={isButtonDisabled}>Generate Result</button>
+              <button 
+                onClick={generateResult} 
+                className={styles.generate} 
+                disabled={isButtonDisabled}
+              >
+                {isLoading ? "Analyzing handwriting" : "Generate Result"}
+                {isLoading && <span className={styles.dots}>...</span>}
+              </button>
             </>
           )}
           <input
@@ -92,7 +112,7 @@ export default function Home() {
             onChange={handleImageChange}
             style={{ display: 'none' }}
           />
-          {result && (
+          {result.length > 0 && (
             <div>
               {result.map((word, index) => (
                 <p
